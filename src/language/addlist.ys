@@ -1,0 +1,47 @@
+    .pos 0
+    irmovq stack, %rsp # sets stack pointer to ->0x200
+    irmovq list, %rdi
+    call addList
+    halt
+#
+# addList: sum the elements of a NULL terminated list
+# parameter: %rdi contains the value list, which
+#            is the adress of the first element in the list
+# return: %rax contains the sum
+addList:
+    # save previous state of registers we use
+    popq %rax
+    popq %rcx
+    popq %rdx
+    popq %rbx
+
+    mrmovq (%rdi), %rax # load contents of list el into rax (rdi * 8)
+    mrmovq 8(%rdi), %rbx # load contents of list el + 1 into rbx 1 + (rdi * 8)
+    addq %rbx, %rax # stores result in rax, doesn't matter if rbx is 0
+    addq %rax, %rdx # allow rdx to store addition thusfar
+    irmovq 16, %rcx # increment rdi by 2 elements so we aren't using numbers we have already added
+    addq %rcx, %rdi
+    irmovq 0, %rcx
+    addq %rcx, %rbx # 0 + rbx -> rbx
+    jne addList # if rbx is not 0, do it again
+    rrmovq %rdx, %rax # move final value to return register
+    # return previous state of registers we use
+    popq %rbx
+    popq %rdx
+    popq %rcx
+    popq %rax
+    ret
+
+    .align 8
+list:
+    .quad 2
+    .quad 5
+    .quad -1
+    .quad 1
+    .quad 2
+    .quad 4
+    .quad 5
+    .quad 0  # indicates the end of the list
+
+    .pos 0x200
+stack:

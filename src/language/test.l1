@@ -1,0 +1,9 @@
+start
+  n = 5.0
+  p = 1000 # comment
+  while condition < thing
+    if (test)
+
+    end
+  end
+end

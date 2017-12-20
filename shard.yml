@@ -1,0 +1,13 @@
+name: implang
+version: 0.1.0
+
+authors:
+  - Eli Ellis <elijahwellis@gmail.com>
+
+targets:
+  implang:
+    main: src/implang.cr
+
+crystal: 0.23.1
+
+license: MIT
